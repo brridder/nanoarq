@@ -2,17 +2,22 @@
 #ifndef ARQ_H_INCLUDED
 #define ARQ_H_INCLUDED
 
+// TODO: Figure out a better system for compile time options
 #ifndef ARQ_USE_C_STDLIB
-    #error You must define ARQ_USE_C_STDLIB to 0 or 1 before including arq.h
+    #warning You must define ARQ_USE_C_STDLIB to 0 or 1 before including arq.h
+    #define ARQ_USE_C_STDLIB (1)
 #endif
 #ifndef ARQ_COMPILE_CRC32
-    #error You must define ARQ_COMPILE_CRC32 to 0 or 1 before including arq.h
+    #warning You must define ARQ_COMPILE_CRC32 to 0 or 1 before including arq.h
+    #define ARQ_COMPILE_CRC32 (1)
 #endif
 #ifndef ARQ_LITTLE_ENDIAN_CPU
-    #error You must define ARQ_LITTLE_ENDIAN_CPU to 0 or 1 before including arq.h
+    #warning You must define ARQ_LITTLE_ENDIAN_CPU to 0 or 1 before including arq.h
+    #define ARQ_LITTLE_ENDIAN_CPU (1)
 #endif
 #ifndef ARQ_USE_CONNECTIONS
-    #error You must define ARQ_USE_CONNECTIONS to 0 or 1 before including arq.h
+    #warning You must define ARQ_USE_CONNECTIONS to 0 or 1 before including arq.h
+    #define ARQ_USE_CONNECTIONS (1)
 #endif
 
 #if ARQ_USE_C_STDLIB == 1
@@ -522,30 +527,6 @@ arq_err_t arq_required_size(arq_cfg_t const *cfg, unsigned *out_required_size)
     arq__lin_alloc_init(&la, ARQ_NULL_PTR, (unsigned)-1);
     arq__alloc(cfg, &la);
     *out_required_size = la.size;
-    return ARQ_OK_COMPLETED;
-}
-
-arq_err_t arq_init(arq_cfg_t const *cfg, void *arq_seat, unsigned arq_seat_size, struct arq_t **out_arq)
-{
-    arq__lin_alloc_t la;
-    arq_err_t check_err;
-    arq_t *arq;
-    if (!cfg || !arq_seat || !out_arq) {
-        return ARQ_ERR_INVALID_PARAM;
-    }
-    check_err = arq__check_cfg(cfg);
-    if (!ARQ_SUCCEEDED(check_err)) {
-        return check_err;
-    }
-    arq__lin_alloc_init(&la, arq_seat, arq_seat_size);
-    arq = arq__alloc(cfg, &la);
-    if (!arq) {
-        return ARQ_ERR_INVALID_PARAM;
-    }
-    arq->cfg = *cfg;
-    arq__init(arq);
-    arq__rst(arq);
-    *out_arq = arq;
     return ARQ_OK_COMPLETED;
 }
 

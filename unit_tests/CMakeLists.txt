@@ -70,7 +70,7 @@ add_dependencies(arq_unit_test_objs CppUTest_external)
 
 ############# Arq runtime for unit tests
 
-set(ARQ_UNIT_TEST_SOURCES ${CMAKE_SOURCE_DIR}/arq.h arq_in_unit_tests.h arq_in_unit_tests.c)
+set(ARQ_UNIT_TEST_SOURCES  arq_in_unit_tests.h arq_in_unit_tests.c)
 string(REPLACE ";" " " ARQ_RUNTIME_FLAGS_STR "${ARQ_RUNTIME_FLAGS}")
 set_source_files_properties(arq_unit_test.c PROPERTIES COMPILE_FLAGS "${ARQ_RUNTIME_FLAGS_STR}")
 
@@ -80,7 +80,7 @@ add_executable(arq_unit_tests ${ARQ_UNIT_TEST_SOURCES} $<TARGET_OBJECTS:arq_unit
 add_dependencies(arq_unit_tests CppUTest_external)
 target_compile_options(arq_unit_tests PRIVATE
                        ${ARQ_COMMON_FLAGS} -DARQ_ASSERTS_ENABLED=1 -DARQ_USE_CONNECTIONS=1)
-target_link_libraries(arq_unit_tests arq_test_support libCppUTest libCppUTestExt)
+target_link_libraries(arq_unit_tests arq_test_support libCppUTest libCppUTestExt nanoarq)
 if(CMAKE_GENERATOR STREQUAL Xcode)
     target_link_libraries(arq_unit_tests c++)
 endif()
@@ -92,7 +92,7 @@ add_executable(arq_no_asserts_unit_tests ${ARQ_UNIT_TEST_SOURCES} $<TARGET_OBJEC
 add_dependencies(arq_no_asserts_unit_tests CppUTest_external)
 target_compile_options(arq_no_asserts_unit_tests PRIVATE
                        ${ARQ_COMMON_FLAGS} -DARQ_ASSERTS_ENABLED=0 -DARQ_USE_CONNECTIONS=1)
-target_link_libraries(arq_no_asserts_unit_tests arq_test_support libCppUTest libCppUTestExt)
+target_link_libraries(arq_no_asserts_unit_tests arq_test_support libCppUTest libCppUTestExt nanoarq)
 if(CMAKE_GENERATOR STREQUAL Xcode)
     target_link_libraries(arq_no_asserts_unit_tests c++)
 endif()

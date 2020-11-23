@@ -95,3 +95,6 @@ if (NOT MSVC)
 endif()
 
 add_subdirectory(functional_tests)
+
+add_library(nanoarq STATIC src/arq.c)
+target_include_directories(nanoarq PUBLIC ${CMAKE_SOURCE_DIR})
